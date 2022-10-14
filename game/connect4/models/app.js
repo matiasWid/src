@@ -43,11 +43,11 @@ class Color {
 
 }
 
-class ColorConsoleView{
+class ColorConsoleView {
 
     #color;
-    
-    constructor(color){
+
+    constructor(color) {
         this.#color = color;
     }
 
@@ -300,10 +300,10 @@ class Board {
 }
 
 class BoardConsoleView {
-    
+
     #board;
 
-    constructor(board){
+    constructor(board) {
         this.#board = board;
     }
 
@@ -339,15 +339,15 @@ class Player {
         this.#board = board;
     }
 
-    isComplete(column){
+    isComplete(column) {
         return this.#board.isComplete(column);
     }
 
-    dropToken(column){
+    dropToken(column) {
         this.#board.dropToken(column, this.#color);
     }
 
-    getColor(){
+    getColor() {
         return this.#color;
     }
 }
@@ -356,7 +356,7 @@ class PlayerConsoleView {
 
     #player;
 
-    constructor(player){
+    constructor(player) {
         this.#player = player;
     }
 
@@ -408,19 +408,19 @@ class Turn {
         this.#activePlayer = 0;
     }
 
-    nextTurn(){
+    nextTurn() {
         this.#activePlayer = (this.#activePlayer + 1) % Turn.#NUMBER_PLAYERS;
     }
 
-    isFinished(){
+    isFinished() {
         return this.#board.isFinished();
     }
 
-    isWinner(){
+    isWinner() {
         return this.#board.isWinner();
     }
 
-    getActivePlayer(){
+    getActivePlayer() {
         return this.#players[this.#activePlayer];
     }
 }
@@ -429,7 +429,7 @@ class TurnConsoleView {
 
     #turn;
 
-    constructor(turn){
+    constructor(turn) {
         this.#turn = turn;
     }
 
@@ -492,7 +492,7 @@ class Connect4 {
     #turn;
     #boardView;
     #turnView;
-    
+
     constructor() {
         this.#board = new Board();
         this.#turn = new Turn(this.#board);
