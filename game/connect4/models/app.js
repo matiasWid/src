@@ -146,7 +146,7 @@ class Direction {
         return this.#coordinate;
     }
 
-    static halfValues(){
+    static halfValues() {
         return Direction.values().splice(0, Direction.values.length / 2 + 1)
     }
 
@@ -163,6 +163,8 @@ class Message {
     static PLAYER_WIN = new Message(`#colorS WIN!!! : -)`);
     static PLAYERS_TIED = new Message(`TIED!!!`);
     static RESUME = new Message(`Do you want to continue`);
+    static NUMBER_OF_RANDOM_PLAYER = new Message(`Enter a number of random player`);
+    static INVALID_NUMBER_OF_RANDOM_PLAYER = new Message(`Invalid number of random player!!! Values [0-2]`);
 
     #string;
 
@@ -356,6 +358,23 @@ class Player {
     }
 }
 
+class RandomPlayer extends Player {
+
+    constructor(color, board) {
+        super(color, board)
+    }
+
+    dropToken(column) {
+        let randomColumn = this.getRandomColumn();
+        super.dropToken(this.getRandomColumn());
+        console.writeln('Ficha en columna: ', randomColumn)
+    }
+
+    getRandomColumn() {
+        parseInt(Math.random() * 7)
+    }
+}
+
 class PlayerConsoleView {
 
     #player;
@@ -398,16 +417,24 @@ class Turn {
     #players;
     #activePlayer;
     #board;
+    #numberRandomPlayers
 
-    constructor(board) {
+    constructor(board, numberRandomPlayers) {
         this.#board = board;
         this.#players = [];
+        this.#numberRandomPlayers = numberRandomPlayers;
         this.reset();
     }
 
     reset() {
         for (let i = 0; i < Turn.#NUMBER_PLAYERS; i++) {
-            this.#players[i] = new Player(Color.get(i), this.#board);
+            if (this.#numberRandomPlayers > i) {
+                console.writeln('Creando random player');
+                this.#players[i] = new RandomPlayer(Color.get(i), this.#board);
+            } else {
+                console.writeln('Creando player');
+                this.#players[i] = new Player(Color.get(i), this.#board);
+            }
         }
         this.#activePlayer = 0;
     }
@@ -499,20 +526,24 @@ class Connect4 {
 
     constructor() {
         this.#board = new Board();
-        this.#turn = new Turn(this.#board);
         this.#boardView = new BoardConsoleView(this.#board);
-        this.#turnView = new TurnConsoleView(this.#turn);
 
     }
 
     playGames() {
         do {
+            let randomPlayers = console.readNumber(Message.NUMBER_OF_RANDOM_PLAYER);
+
+            this.#turn = new Turn(this.#board, randomPlayers);
+            this.#turnView = new TurnConsoleView(this.#turn);
+
             this.playGame();
         } while (this.isResumed());
     }
 
     playGame() {
         Message.TITLE.writeln();
+
         this.#boardView.writeln();
         do {
             this.#turnView.play();

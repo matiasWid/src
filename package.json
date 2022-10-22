@@ -3,9 +3,10 @@
   "version": "1.0.0",
 
   "description": "mastermind using NodeJs",
-  "main": "mastermind.js",
+  "main": "game/connect4/models/app.js",
   "scripts": {
-    "test": "npm test"
+    "test": "npm test",
+    "debug": "node game/connect4/models/app.js"
   },
   "repository": {
     "type": "git",
