@@ -325,7 +325,7 @@ class Player {
         console.writeln(this.#color.toString());
         this.#board.dropToken(column, this.#color);
     }
-    
+
     writeWinner() {
         let message = Message.PLAYER_WIN.toString();
         message = message.replace(`#color`, this.#color.toString());
@@ -339,10 +339,10 @@ class Player {
 }
 
 class UserPlayer {
-    
+
     #player;
 
-    constructor(player){
+    constructor(player) {
         this.#player = player;
     }
 
@@ -364,13 +364,22 @@ class UserPlayer {
         return column;
     }
 
+    play() {
+        let column = this.getColumn();
+        this.#player.play(column);
+    }
+
+    writeWinner() {
+        this.#player.writeWinner();
+    }
+
 }
 
 class RandomPlayer {
 
     #player;
 
-    constructor(player){
+    constructor(player) {
         this.#player = player;
     }
 
@@ -383,12 +392,12 @@ class RandomPlayer {
         return column;
     }
 
-    play(){        
+    play() {
         let column = this.getColumn();
         this.#player.play(column);
     }
 
-    writeWinner(){
+    writeWinner() {
         this.#player.writeWinner();
     }
 }
@@ -408,8 +417,24 @@ class Turn {
     }
 
     reset() {
+        do {
+            var numberRandomPlayers = console.readNumber("Ingrese la cantidad de jugadores aleatorios: ");
+            if (numberRandomPlayers > Turn.#NUMBER_PLAYERS) {
+                console.writeln("La cantidad de jugadores alreatorios debe ser igual o menor a ", Turn.#NUMBER_PLAYERS);
+            }
+        } while (numberRandomPlayers > Turn.#NUMBER_PLAYERS);
+
+        let createdRandomPlayers = 0;
         for (let i = 0; i < Turn.#NUMBER_PLAYERS; i++) {
-            this.#players[i] = new RandomPlayer(new Player(Color.get(i), this.#board));
+            let player = new Player(Color.get(i), this.#board);
+            if (createdRandomPlayers < numberRandomPlayers) {
+                this.#players[i] = new RandomPlayer(player);
+                createdRandomPlayers++;
+                console.writeln("Se crea jugador aleatorio");
+            }
+            else {
+                this.#players[i] = new UserPlayer(player);
+            }
         }
         this.#activePlayer = 0;
     }
