@@ -320,10 +320,9 @@ class Player {
         this.#board = board;
     }
 
-    play() {
+    play(column) {
         Message.TURN.write();
         console.writeln(this.#color.toString());
-        let column = this.getColumn();
         this.#board.dropToken(column, this.#color);
     }
     
@@ -339,7 +338,13 @@ class Player {
 
 }
 
-class UserPlayer extends Player {
+class UserPlayer {
+    
+    #player;
+
+    constructor(player){
+        this.#player = player;
+    }
 
     getColumn() {
         let column;
@@ -350,7 +355,7 @@ class UserPlayer extends Player {
             if (!valid) {
                 Message.INVALID_COLUMN.writeln();
             } else {
-                valid = !this.isComplete(column);
+                valid = !this.#player.isComplete(column);
                 if (!valid) {
                     Message.COMPLETED_COLUMN.writeln();
                 }
@@ -361,15 +366,30 @@ class UserPlayer extends Player {
 
 }
 
-class RandomPlayer extends Player {
+class RandomPlayer {
+
+    #player;
+
+    constructor(player){
+        this.#player = player;
+    }
 
     getColumn() {
         let column;
         do {
             column = Math.floor(Math.random() * Coordinate.NUMBER_COLUMNS);
-        } while (this.isComplete(column));
+        } while (this.#player.isComplete(column));
         console.writeln(`Aleatoriamente en la columna: ${column}`);
         return column;
+    }
+
+    play(){        
+        let column = this.getColumn();
+        this.#player.play(column);
+    }
+
+    writeWinner(){
+        this.#player.writeWinner();
     }
 }
 
@@ -389,7 +409,7 @@ class Turn {
 
     reset() {
         for (let i = 0; i < Turn.#NUMBER_PLAYERS; i++) {
-            this.#players[i] = new RandomPlayer(Color.get(i), this.#board);
+            this.#players[i] = new RandomPlayer(new Player(Color.get(i), this.#board));
         }
         this.#activePlayer = 0;
     }
