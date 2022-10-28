@@ -342,11 +342,11 @@ class UserPlayer {
 
     #player;
 
-    constructor(player) {
-        this.#player = player;
+    constructor(color, board) {
+        this.#player = new Player(color, board);
     }
 
-    getColumn() {
+    #getColumn() {
         let column;
         let valid;
         do {
@@ -365,7 +365,7 @@ class UserPlayer {
     }
 
     play() {
-        let column = this.getColumn();
+        let column = this.#getColumn();
         this.#player.play(column);
     }
 
@@ -379,11 +379,11 @@ class RandomPlayer {
 
     #player;
 
-    constructor(player) {
-        this.#player = player;
+    constructor(color, board) {
+        this.#player = new Player(color, board);
     }
 
-    getColumn() {
+    #getColumn() {
         let column;
         do {
             column = Math.floor(Math.random() * Coordinate.NUMBER_COLUMNS);
@@ -393,7 +393,7 @@ class RandomPlayer {
     }
 
     play() {
-        let column = this.getColumn();
+        let column = this.#getColumn();
         this.#player.play(column);
     }
 
@@ -426,14 +426,13 @@ class Turn {
 
         let createdRandomPlayers = 0;
         for (let i = 0; i < Turn.#NUMBER_PLAYERS; i++) {
-            let player = new Player(Color.get(i), this.#board);
             if (createdRandomPlayers < numberRandomPlayers) {
-                this.#players[i] = new RandomPlayer(player);
+                this.#players[i] = new RandomPlayer(Color.get(i), this.#board);
                 createdRandomPlayers++;
                 console.writeln("Se crea jugador aleatorio");
             }
             else {
-                this.#players[i] = new UserPlayer(player);
+                this.#players[i] = new UserPlayer(Color.get(i), this.#board);
             }
         }
         this.#activePlayer = 0;
