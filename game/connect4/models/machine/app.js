@@ -424,11 +424,9 @@ class Turn {
             }
         } while (numberRandomPlayers > Turn.#NUMBER_PLAYERS);
 
-        let createdRandomPlayers = 0;
         for (let i = 0; i < Turn.#NUMBER_PLAYERS; i++) {
-            if (createdRandomPlayers < numberRandomPlayers) {
+            if (i < numberRandomPlayers) {
                 this.#players[i] = new RandomPlayer(Color.get(i), this.#board);
-                createdRandomPlayers++;
                 console.writeln("Se crea jugador aleatorio");
             }
             else {
