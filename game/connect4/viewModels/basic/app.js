@@ -146,10 +146,6 @@ class Direction {
         return this.#coordinate;
     }
 
-    static halfValues(){
-        return Direction.values().splice(0,Direction.values().length / 2);
-    }
-
 }
 
 class Message {
@@ -163,8 +159,6 @@ class Message {
     static PLAYER_WIN = new Message(`#colorS WIN!!! : -)`);
     static PLAYERS_TIED = new Message(`TIED!!!`);
     static RESUME = new Message(`Do you want to continue`);
-    static NUMBER_OF_RANDOM_PLAYER = new Message(`Enter a number of random player`);
-    static INVALID_NUMBER_OF_RANDOM_PLAYER = new Message(`Invalid number of random player!!! Values [0-2]`);
 
     #string;
 
@@ -266,7 +260,7 @@ class Board {
             return false;
         }
         let line = new Line(this.#lastDrop);
-        for (let direction of Direction.halfValues()) {
+        for (let direction of Direction.values().splice(0, 3)) {
             line.set(direction);
             for (let i = 0; i < Line.LENGTH; i++) {
                 if (this.isConnect4(line)) {
@@ -314,7 +308,7 @@ class BoardConsoleView {
     }
 
     writeln() {
-        this.#writeHorizontal();
+        this.writeHorizontal();
         for (let i = Coordinate.NUMBER_ROWS - 1; i >= 0; i--) {
             Message.VERTICAL_LINE.write();
             for (let j = 0; j < Coordinate.NUMBER_COLUMNS; j++) {
@@ -324,10 +318,10 @@ class BoardConsoleView {
             }
             console.writeln();
         }
-        this.#writeHorizontal();
+        this.writeHorizontal();
     }
 
-    #writeHorizontal() {
+    writeHorizontal() {
         for (let i = 0; i < 4 * Coordinate.NUMBER_COLUMNS; i++) {
             Message.HORIZONTAL_LINE.write();
         }
@@ -355,23 +349,6 @@ class Player {
 
     getColor() {
         return this.#color;
-    }
-}
-
-class RandomPlayer extends Player {
-
-    constructor(color, board) {
-        super(color, board)
-    }
-
-    dropToken(column) {
-        let randomColumn = this.getRandomColumn();
-        super.dropToken(this.getRandomColumn());
-        console.writeln('Ficha en columna: ', randomColumn)
-    }
-
-    getRandomColumn() {
-        parseInt(Math.random() * 7)
     }
 }
 
@@ -417,24 +394,16 @@ class Turn {
     #players;
     #activePlayer;
     #board;
-    #numberRandomPlayers;
 
-    constructor(board, numberRandomPlayers) {
+    constructor(board) {
         this.#board = board;
         this.#players = [];
-        this.#numberRandomPlayers = numberRandomPlayers;
         this.reset();
     }
 
     reset() {
         for (let i = 0; i < Turn.#NUMBER_PLAYERS; i++) {
-            if (this.#numberRandomPlayers > i) {
-                console.writeln('Creando random player');
-                this.#players[i] = new RandomPlayer(Color.get(i), this.#board);
-            } else {
-                console.writeln('Creando player');
-                this.#players[i] = new Player(Color.get(i), this.#board);
-            }
+            this.#players[i] = new Player(Color.get(i), this.#board);
         }
         this.#activePlayer = 0;
     }
@@ -526,24 +495,20 @@ class Connect4 {
 
     constructor() {
         this.#board = new Board();
+        this.#turn = new Turn(this.#board);
         this.#boardView = new BoardConsoleView(this.#board);
+        this.#turnView = new TurnConsoleView(this.#turn);
 
     }
 
     playGames() {
         do {
-            let randomPlayers = console.readNumber(Message.NUMBER_OF_RANDOM_PLAYER);
-
-            this.#turn = new Turn(this.#board, randomPlayers);
-            this.#turnView = new TurnConsoleView(this.#turn);
-
             this.playGame();
         } while (this.isResumed());
     }
 
     playGame() {
         Message.TITLE.writeln();
-
         this.#boardView.writeln();
         do {
             this.#turnView.play();
