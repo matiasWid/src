@@ -147,7 +147,7 @@ class Direction {
     }
 
     static halfValues() {
-        return Direction.values().splice(0, (Direction.values().length) - 1)
+        return Direction.values().splice(0, Direction.values().length / 2)
     }
 
 }
@@ -318,7 +318,7 @@ class Player {
         this.#board.dropToken(column, this.#color);
     }
 
-    getColor(){
+    getColor() {
         return this.#color;
     }
 
@@ -336,9 +336,9 @@ class Player {
         return this.#board.isComplete(column);
     }
 
-    getColumn() {}
+    getColumn() { }
 
-    accept(playerView){}
+    accept(playerView) { }
 
 }
 
@@ -362,7 +362,7 @@ class UserPlayer extends Player {
         return column;
     }
 
-    accept(playerView){
+    accept(playerView) {
         playerView.visitUserPlayer(this);
     }
 
@@ -378,7 +378,7 @@ class RandomPlayer extends Player {
         return column;
     }
 
-    accept(playerView){
+    accept(playerView) {
         playerView.visitRandomPlayer(this);
     }
 
@@ -402,7 +402,7 @@ class PlayerView {
         console.writeln(message);
     }
 
-    visitRandomPlayer(randomPlayer){
+    visitRandomPlayer(randomPlayer) {
         let column = randomPlayer.getColumn();
         Message.TURN.write();
         console.writeln(this.#player.getColor().toString());
@@ -410,7 +410,7 @@ class PlayerView {
         randomPlayer.dropToken(column);
     }
 
-    visitUserPlayer(userPlayer){
+    visitUserPlayer(userPlayer) {
         let valid;
         let column;
         do {
@@ -475,8 +475,7 @@ class Turn {
         return this.#players[this.#activePlayer];
     }
 
-    static getMaxNumberPlayers()
-    {
+    static getMaxNumberPlayers() {
         return this.#NUMBER_PLAYERS;
     }
 }

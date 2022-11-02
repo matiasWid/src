@@ -146,6 +146,10 @@ class Direction {
         return this.#coordinate;
     }
 
+    static halfValues() {
+        return Direction.values().splice(0, Direction.values().length / 2)
+    }
+
 }
 
 class Message {
