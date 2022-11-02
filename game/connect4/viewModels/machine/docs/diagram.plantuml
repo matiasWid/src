@@ -1,0 +1,36 @@
+@startuml  
+
+abstract class Player {
+    constructor(color, board)
+    play()
+    getColor()
+    isComplete(column)
+    {abstract} getColumn()
+    {abstract} accept(playerView)
+}
+
+class UserPlayer{
+    getColumn()
+}
+
+class RandomPlayer{
+    getColumn()
+}
+
+Player <|-down- UserPlayer 
+Player <|-down- RandomPlayer
+
+class PlayerView{
+    #player
+    constructor(player)
+    play()
+    writeWiner()
+    visitRandomPlayer(randomPlayer)
+    visitUserPlayer(userPlayer)
+}
+
+PlayerView <..> UserPlayer
+PlayerView <..> RandomPlayer
+PlayerView <..> Player
+
+@enduml
