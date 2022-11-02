@@ -147,7 +147,7 @@ class Direction {
     }
 
     static halfValues() {
-        return Direction.values().splice(0, Direction.values.length / 2)
+        return Direction.values().splice(0, (Direction.values().length) - 1)
     }
 
 }
@@ -404,6 +404,8 @@ class PlayerView {
 
     visitRandomPlayer(randomPlayer){
         let column = randomPlayer.getColumn();
+        Message.TURN.write();
+        console.writeln(this.#player.getColor().toString());
         console.writeln(`Aleatoriamente en la columna: ${column}`);
         randomPlayer.dropToken(column);
     }
@@ -448,15 +450,12 @@ class Turn {
     reset() {
         for (let i = 0; i < Turn.#NUMBER_PLAYERS; i++) {
             if (i < this.#numberRandomPlayers) {
-                console.writeln("Usuario aleatorio");
                 this.#players[i] = new RandomPlayer(Color.get(i), this.#board);
             }
             else {
-                console.writeln("Usuario humano");
                 this.#players[i] = new UserPlayer(Color.get(i), this.#board);
             }
         }
-        console.readNumber();
         this.#activePlayer = 0;
     }
 

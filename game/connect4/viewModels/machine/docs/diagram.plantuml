@@ -29,8 +29,11 @@ class PlayerView{
     visitUserPlayer(userPlayer)
 }
 
-PlayerView <..> UserPlayer
-PlayerView <..> RandomPlayer
-PlayerView <..> Player
+PlayerView <.. UserPlayer
+PlayerView <.. RandomPlayer
+PlayerView ..> UserPlayer
+PlayerView ..> RandomPlayer
+PlayerView <.. Player
+PlayerView o--> Player
 
 @enduml
