@@ -311,21 +311,8 @@ class Player {
         this.#board = board;
     }
 
-    play() {
-        Message.TURN.write();
-        console.writeln(this.#color.toString());
-        let column = this.getColumn();
-        this.#board.dropToken(column, this.#color);
-    }
-
     getColor() {
         return this.#color;
-    }
-
-    writeWinner() {
-        let message = Message.PLAYER_WIN.toString();
-        message = message.replace(`#color`, this.#color.toString());
-        console.writeln(message);
     }
 
     dropToken(column) {
@@ -336,34 +323,17 @@ class Player {
         return this.#board.isComplete(column);
     }
 
-    getColumn() { }
-
     accept(playerView) { }
 
 }
 
 class UserPlayer extends Player {
-
-    getColumn() {
-        let column;
-        let valid;
-        do {
-            column = console.readNumber(Message.ENTER_COLUMN_TO_DROP.toString()) - 1;
-            valid = Coordinate.isColumnValid(column);
-            if (!valid) {
-                Message.INVALID_COLUMN.writeln();
-            } else {
-                valid = !this.isComplete(column);
-                if (!valid) {
-                    Message.COMPLETED_COLUMN.writeln();
-                }
-            }
-        } while (!valid);
-        return column;
-    }
-
     accept(playerView) {
         playerView.visitUserPlayer(this);
+    }
+
+    isColumnValid(column){
+        
     }
 
 }
@@ -416,7 +386,6 @@ class PlayerView {
         do {
             Message.TURN.write();
             console.writeln(this.#player.getColor().toString());
-            //this.#player.accept(this);
             column = console.readNumber(Message.ENTER_COLUMN_TO_DROP.toString()) - 1;
             valid = Coordinate.isColumnValid(column);
             if (!valid) {
