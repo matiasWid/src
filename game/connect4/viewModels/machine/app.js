@@ -331,11 +331,6 @@ class UserPlayer extends Player {
     accept(playerView) {
         playerView.visitUserPlayer(this);
     }
-
-    isColumnValid(column){
-        
-    }
-
 }
 
 class RandomPlayer extends Player {
@@ -347,7 +342,7 @@ class RandomPlayer extends Player {
         } while (this.isComplete(column));
         return column;
     }
-
+    
     accept(playerView) {
         playerView.visitRandomPlayer(this);
     }
@@ -376,7 +371,7 @@ class PlayerView {
         let column = randomPlayer.getColumn();
         Message.TURN.write();
         console.writeln(this.#player.getColor().toString());
-        console.writeln(`Aleatoriamente en la columna: ${column}`);
+        console.writeln(`${Message.RANDOM_COLUMN} ${column}`);
         randomPlayer.dropToken(column);
     }
 
@@ -524,7 +519,7 @@ class Message {
     static NUMBER_OF_RANDOM_PLAYER = new Message(`Enter a number of random player`);
     static INVALID_NUMBER_OF_RANDOM_PLAYER = new Message(`Invalid number of random player!!! Values [0-2]`);
     static INVALID_NUMBER_OF_RANDOM_PLAYER = new Message(`Invalid number of random player!!! Values [${Turn.getMaxNumberPlayers()}]`);
-
+    static RANDOM_COLUMN = new Message(`Randomly on column:`)
     #string;
 
     constructor(string) {
