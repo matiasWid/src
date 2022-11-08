@@ -323,13 +323,13 @@ class Player {
         return this.#board.isComplete(column);
     }
 
-    accept(playerView) { }
+    accept(visitor) { }
 
 }
 
 class UserPlayer extends Player {
-    accept(playerView) {
-        playerView.visitUserPlayer(this);
+    accept(visitor) {
+        visitor.visitUserPlayer(this);
     }
 }
 
@@ -343,8 +343,8 @@ class RandomPlayer extends Player {
         return column;
     }
     
-    accept(playerView) {
-        playerView.visitRandomPlayer(this);
+    accept(visitor) {
+        visitor.visitRandomPlayer(this);
     }
 
 }
@@ -468,6 +468,17 @@ class TurnView {
             Message.PLAYERS_TIED.writeln();
         }
     }
+
+    #getNumberRandomPlayers() {
+        let numberRandomPlayers;
+        do {
+            numberRandomPlayers = console.readNumber(Message.NUMBER_OF_RANDOM_PLAYER);
+            if (numberRandomPlayers > Turn.getMaxNumberPlayers()) {
+                console.writeln(Message.INVALID_NUMBER_OF_RANDOM_PLAYER);
+            }
+        } while (numberRandomPlayers > Turn.getMaxNumberPlayers());
+        return numberRandomPlayers;
+    }
 }
 
 class YesNoDialog {
@@ -550,30 +561,30 @@ class Connect4 {
     constructor() {
         this.#board = new Board();
         this.#boardView = new BoardView(this.#board);
-
     }
 
     playGames() {
         do {
-            let numberRandomPlayers = getNumberRandomPlayers();
+            let numberRandomPlayers = this.#getNumberRandomPlayers();
             this.#turn = new Turn(this.#board, numberRandomPlayers);
             this.#turnView = new TurnView(this.#turn);
 
             this.playGame();
         } while (this.isResumed());
 
-        function getNumberRandomPlayers() {
-            let numberRandomPlayers;
-            do {
-                numberRandomPlayers = console.readNumber(Message.NUMBER_OF_RANDOM_PLAYER);
-                if (numberRandomPlayers > Turn.getMaxNumberPlayers()) {
-                    console.writeln(Message.INVALID_NUMBER_OF_RANDOM_PLAYER);
-                }
-            } while (numberRandomPlayers > Turn.getMaxNumberPlayers());
-            return numberRandomPlayers;
-        }
     }
-
+    
+    #getNumberRandomPlayers() {
+        let numberRandomPlayers;
+        do {
+            numberRandomPlayers = console.readNumber(Message.NUMBER_OF_RANDOM_PLAYER);
+            if (numberRandomPlayers > Turn.getMaxNumberPlayers()) {
+                console.writeln(Message.INVALID_NUMBER_OF_RANDOM_PLAYER);
+            }
+        } while (numberRandomPlayers > Turn.getMaxNumberPlayers());
+        return numberRandomPlayers;
+    }
+    
     playGame() {
         Message.TITLE.writeln();
 
