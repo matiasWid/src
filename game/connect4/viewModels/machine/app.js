@@ -342,7 +342,7 @@ class RandomPlayer extends Player {
         } while (this.isComplete(column));
         return column;
     }
-    
+
     accept(visitor) {
         visitor.visitRandomPlayer(this);
     }
@@ -371,7 +371,7 @@ class PlayerView {
         let column = randomPlayer.getColumn();
         Message.TURN.write();
         console.writeln(this.#player.getColor().toString());
-        console.writeln(`${Message.RANDOM_COLUMN} ${column}`);
+        console.writeln(`${Message.RANDOM_COLUMN} ${column + 1}`);
         randomPlayer.dropToken(column);
     }
 
@@ -402,23 +402,17 @@ class Turn {
     #players;
     #activePlayer;
     #board;
-    #numberRandomPlayers;
 
-    constructor(board, numberRandomPlayers) {
+    constructor(board) {
         this.#board = board;
         this.#players = [];
-        this.#numberRandomPlayers = numberRandomPlayers;
-        this.reset();
     }
 
-    reset() {
+    reset(numberRandomPlayers) {
         for (let i = 0; i < Turn.#NUMBER_PLAYERS; i++) {
-            if (i < this.#numberRandomPlayers) {
-                this.#players[i] = new RandomPlayer(Color.get(i), this.#board);
-            }
-            else {
-                this.#players[i] = new UserPlayer(Color.get(i), this.#board);
-            }
+            this.#players[i] = i < numberRandomPlayers ?
+                new RandomPlayer(Color.get(i), this.#board) :
+                new UserPlayer(Color.get(i), this.#board);
         }
         this.#activePlayer = 0;
     }
@@ -469,7 +463,7 @@ class TurnView {
         }
     }
 
-    #getNumberRandomPlayers() {
+    reset() {
         let numberRandomPlayers;
         do {
             numberRandomPlayers = console.readNumber(Message.NUMBER_OF_RANDOM_PLAYER);
@@ -477,7 +471,7 @@ class TurnView {
                 console.writeln(Message.INVALID_NUMBER_OF_RANDOM_PLAYER);
             }
         } while (numberRandomPlayers > Turn.getMaxNumberPlayers());
-        return numberRandomPlayers;
+        this.#turn.reset(numberRandomPlayers);
     }
 }
 
@@ -554,7 +548,6 @@ class Message {
 class Connect4 {
 
     #board;
-    #turn;
     #boardView;
     #turnView;
 
@@ -565,26 +558,13 @@ class Connect4 {
 
     playGames() {
         do {
-            let numberRandomPlayers = this.#getNumberRandomPlayers();
-            this.#turn = new Turn(this.#board, numberRandomPlayers);
-            this.#turnView = new TurnView(this.#turn);
-
+            let turn = new Turn(this.#board);
+            this.#turnView = new TurnView(turn);
+            this.#turnView.reset();
             this.playGame();
         } while (this.isResumed());
+    }
 
-    }
-    
-    #getNumberRandomPlayers() {
-        let numberRandomPlayers;
-        do {
-            numberRandomPlayers = console.readNumber(Message.NUMBER_OF_RANDOM_PLAYER);
-            if (numberRandomPlayers > Turn.getMaxNumberPlayers()) {
-                console.writeln(Message.INVALID_NUMBER_OF_RANDOM_PLAYER);
-            }
-        } while (numberRandomPlayers > Turn.getMaxNumberPlayers());
-        return numberRandomPlayers;
-    }
-    
     playGame() {
         Message.TITLE.writeln();
 
@@ -601,7 +581,6 @@ class Connect4 {
         yesNoDialog.read(Message.RESUME.toString());
         if (yesNoDialog.isAffirmative()) {
             this.#board.reset();
-            this.#turn.reset();
         }
         return yesNoDialog.isAffirmative();
     }
