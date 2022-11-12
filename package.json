@@ -4,6 +4,7 @@
 
   "description": "mastermind using NodeJs",
   "main": "game/connect4/models/app.js",
+  "type": "module",
   "scripts": {
     "test": "npm test",
     "debug": "node game/connect4/models/app.js"
