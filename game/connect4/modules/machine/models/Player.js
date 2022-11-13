@@ -20,7 +20,7 @@ class Player {
         return this.#board.isComplete(column);
     }
 
-    accept(_visitor) { }
+    accept(visitor) { }
 
 }
 

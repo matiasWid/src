@@ -14,7 +14,7 @@ class Turn {
         this.#players = [];
     }
 
-    reset(numberRandomPlayers) {
+    setup(numberRandomPlayers) {
         for (let i = 0; i < Turn.#NUMBER_PLAYERS; i++) {
             this.#players[i] = i < numberRandomPlayers ?
                 new RandomPlayer(Color.get(i), this.#board) :
@@ -23,7 +23,7 @@ class Turn {
         this.#activePlayer = 0;
     }
 
-    nextTurn() {
+    next() {
         this.#activePlayer = (this.#activePlayer + 1) % Turn.#NUMBER_PLAYERS;
     }
 

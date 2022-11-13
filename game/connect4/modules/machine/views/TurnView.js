@@ -5,30 +5,30 @@ import { console } from '../utils/console.js';
 
 class TurnView {
 
-    #turn;
+    #game;
 
-    constructor(turn) {
-        this.#turn = turn;
+    constructor(game) {
+        this.#game = game;
     }
 
     play() {
-        let playerView = new PlayerView(this.#turn.getActivePlayer());
+        let playerView = new PlayerView(this.#game.getActivePlayer());
         playerView.play();
-        if (!this.#turn.isFinished()) {
-            this.#turn.nextTurn();
+        if (!this.#game.isFinished()) {
+            this.#game.next();
         }
     }
 
     writeResult() {
-        if (this.#turn.isWinner()) {
-            let playerView = new PlayerView(this.#turn.getActivePlayer());
+        if (this.#game.isWinner()) {
+            let playerView = new PlayerView(this.#game.getActivePlayer());
             playerView.writeWinner();
         } else {
             Message.PLAYERS_TIED.writeln();
         }
     }
 
-    reset() {
+    setup() {
         let numberRandomPlayers;
         do {
             numberRandomPlayers = console.readNumber(Message.NUMBER_OF_RANDOM_PLAYER);
@@ -36,7 +36,7 @@ class TurnView {
                 console.writeln(Message.INVALID_NUMBER_OF_RANDOM_PLAYER);
             }
         } while (numberRandomPlayers > Turn.getMaxNumberPlayers());
-        this.#turn.reset(numberRandomPlayers);
+        this.#game.setup(numberRandomPlayers);
     }
 }
 export { TurnView };

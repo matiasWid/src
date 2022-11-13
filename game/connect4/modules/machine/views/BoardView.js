@@ -5,10 +5,10 @@ import { console } from '../utils/console.js';
 
 class BoardView {
 
-    #board;
+    #game;
 
-    constructor(board) {
-        this.#board = board;
+    constructor(game) {
+        this.#game = game;
     }
 
     writeln() {
@@ -16,7 +16,7 @@ class BoardView {
         for (let i = Coordinate.NUMBER_ROWS - 1; i >= 0; i--) {
             Message.VERTICAL_LINE.write();
             for (let j = 0; j < Coordinate.NUMBER_COLUMNS; j++) {
-                let colorView = new ColorView(this.#board.getColor(new Coordinate(i, j)));
+                let colorView = new ColorView(this.#game.getColor(new Coordinate(i, j)));
                 colorView.write();
                 Message.VERTICAL_LINE.write();
             }
