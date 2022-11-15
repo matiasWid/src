@@ -13,8 +13,7 @@ class Message {
     static PLAYERS_TIED = new Message(`TIED!!!`);
     static RESUME = new Message(`Do you want to continue`);
     static NUMBER_OF_RANDOM_PLAYER = new Message(`Enter a number of random player`);
-    static INVALID_NUMBER_OF_RANDOM_PLAYER = new Message(`Invalid number of random player!!! Values [0-2]`);
-    static INVALID_NUMBER_OF_RANDOM_PLAYER = new Message(`Invalid number of random player!!! Values [${Turn.getMaxNumberPlayers()}]`);
+    static INVALID_NUMBER_OF_RANDOM_PLAYER = new Message(`Invalid number of random player!!! Values [0-${Turn.getMaxNumberPlayers()}]`);
     static RANDOM_COLUMN = new Message(`Randomly on column:`);
     #string;
 

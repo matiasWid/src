@@ -1,4 +1,4 @@
-import { console } from '../utils/console.js';
+import { console } from './console.js';
 
 class YesNoDialog {
 
