@@ -1,4 +1,4 @@
-import { Coordinate } from "./Coordinate.js";
+import { Coordinate } from "../types/Coordinate.js";
 import { Player } from "./Player.js";
 
 class RandomPlayer extends Player {

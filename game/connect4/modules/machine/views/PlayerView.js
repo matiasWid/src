@@ -1,6 +1,6 @@
-import { Coordinate } from "../models/Coordinate.js";
+import { Coordinate } from "../types/Coordinate.js";
 import { Message } from "./Message.js";
-import { console } from '../utils/console.js';
+import { console } from '../../utils/console.js';
 
 class PlayerView {
 

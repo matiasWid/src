@@ -1,6 +1,6 @@
 import { RandomPlayer } from "./RandomPlayer.js";
 import { UserPlayer } from "./UserPlayer.js";
-import { Color } from "./Color.js";
+import { Color } from "../types/Color.js";
 
 class Turn {
 

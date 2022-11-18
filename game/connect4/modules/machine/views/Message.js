@@ -1,5 +1,5 @@
 import { Turn } from "../models/Turn.js";
-import { console } from '../utils/console.js';
+import { console } from '../../utils/console.js';
 
 class Message {
     static TITLE = new Message(`--- CONNECT 4 ---`);

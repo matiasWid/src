@@ -1,7 +1,7 @@
-import { Coordinate } from "./Coordinate.js";
-import { Direction } from "./Direction.js";
+import { Coordinate } from "../types/Coordinate.js";
+import { Direction } from "../types/Direction.js";
 import { Line } from "./Line.js";
-import { Color } from './Color.js';
+import { Color } from '../types/Color.js';
 
 class Board {
 

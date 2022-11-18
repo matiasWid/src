@@ -1,7 +1,7 @@
 import { BoardView } from "./BoardView.js";
 import { TurnView } from "./TurnView.js";
 import { Message } from './Message.js';
-import { YesNoDialog } from '../utils/YesNoDialog.js';
+import { YesNoDialog } from '../../utils/YesNoDialog.js';
 
 class GameView {
     #game;

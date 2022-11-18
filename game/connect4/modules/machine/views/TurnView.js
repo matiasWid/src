@@ -1,7 +1,7 @@
 import { PlayerView } from './PlayerView.js';
 import { Message } from './Message.js';
 import { Turn } from '../models/Turn.js';
-import { console } from '../utils/console.js';
+import { console } from '../../utils/console.js';
 
 class TurnView {
 
