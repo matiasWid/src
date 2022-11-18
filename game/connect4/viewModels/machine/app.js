@@ -106,10 +106,6 @@ class Coordinate {
         return this.#column === coordinate.#column && this.#row === coordinate.#row;
     }
 
-    toString() {
-        return `Coordinate [row= ${this.#row} column= ${this.#column}]`;
-    }
-
 }
 
 class Direction {

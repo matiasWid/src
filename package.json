@@ -1,7 +1,7 @@
 {
   "name": "mastermind.solution.javascript",
   "version": "1.0.0",
-
+  
   "description": "mastermind using NodeJs",
   "main": "game/connect4/models/app.js",
   "type": "module",
